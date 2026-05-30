@@ -1,0 +1,43 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <title>رعد - ربط واتساب</title>
+  <style>
+    body { 
+      display: flex; 
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center; 
+      height: 100vh; 
+      font-family: Arial;
+      background: #f0f0f0;
+    }
+    img { width: 300px; height: 300px; }
+    h2 { color: #333; }
+  </style>
+</head>
+<body>
+  <h2>🌩️ رعد - امسح QR لربط واتساب</h2>
+  <div id="qr"></div>
+  <p id="status">جاري التحميل...</p>
+
+  <script>
+    async function checkQR() {
+      const res = await fetch('http://localhost:3000/whatsapp/qr');
+      const data = await res.json();
+      
+      if (data.status === 'qr') {
+        document.getElementById('qr').innerHTML = `<img src="${data.qr}">`;
+        document.getElementById('status').textContent = '📱 امسح QR بواتساب';
+      } else if (data.status === 'connected') {
+        document.getElementById('qr').innerHTML = '✅';
+        document.getElementById('status').textContent = 'واتساب متصل!';
+      } else {
+        document.getElementById('status').textContent = '⏳ جاري التحميل...';
+        setTimeout(checkQR, 2000);
+      }
+    }
+    checkQR();
+  </script>
+</body>
+</html>
