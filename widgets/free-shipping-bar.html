@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>رعد - شريط الشحن المجاني</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; }
+
+    /* الشريط العلوي */
+    .shipping-bar {
+      background: linear-gradient(135deg, #1a472a, #2d6a4f);
+      padding: 12px 20px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .shipping-bar.done { background: linear-gradient(135deg, #4CAF50, #45a049); }
+
+    .shipping-icon { font-size: 24px; animation: truck 1s ease infinite; }
+    @keyframes truck {
+      0%,100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+
+    .shipping-text { color: white; font-size: 14px; font-weight: 500; }
+    .shipping-text strong { color: #90EE90; }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50px;
+      padding: 6px 16px;
+    }
+
+    .progress-mini {
+      width: 120px; height: 6px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50px; overflow: hidden;
+    }
+
+    .progress-mini-fill {
+      height: 100%; background: #90EE90;
+      border-radius: 50px; transition: width 0.5s ease;
+    }
+
+    .progress-label { color: white; font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+    /* السلة */
+    .demo-section { max-width: 500px; margin: 40px auto; padding: 0 20px; }
+
+    .cart-card {
+      background: white; border-radius: 20px;
+      padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+
+    .cart-title { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; }
+
+    .cart-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 0; border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cart-item-icon {
+      width: 48px; height: 48px; background: #f5f5f5;
+      border-radius: 12px; display: flex;
+      align-items: center; justify-content: center; font-size: 24px;
+    }
+
+    .cart-item-name { flex: 1; font-size: 14px; font-weight: 600; color: #333; }
+    .cart-item-price { font-size: 16px; font-weight: 700; color: #ff6b35; }
+
+    .total-row {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 16px 0 8px;
+    }
+
+    .total-label { font-size: 16px; font-weight: 700; color: #333; }
+    .total-amount { font-size: 22px; font-weight: 800; color: #1a1a2e; }
+
+    .shipping-status {
+      background: #f8f8f8; border-radius: 12px;
+      padding: 14px 16px; margin-top: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .shipping-status-text { font-size: 13px; color: #666; }
+    .shipping-status-text strong { color: #ff6b35; }
+
+    .add-more-btn {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: white; border: none; border-radius: 50px;
+      padding: 14px; font-size: 15px; font-weight: 700;
+      cursor: pointer; width: 100%; margin-top: 16px;
+      transition: transform 0.2s;
+    }
+
+    .add-more-btn:hover { transform: translateY(-2px); }
+
+    .slider-section { text-align: center; margin-top: 24px; }
+    .slider-label { font-size: 13px; color: #888; margin-bottom: 8px; }
+    input[type=range] { width: 100%; accent-color: #ff6b35; }
+
+    /* نافذة المنتجات المقترحة */
+    .overlay {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 9998; display: none;
+      align-items: center; justify-content: center;
+    }
+
+    .overlay.show { display: flex; }
+
+    .products-popup {
+      background: white; border-radius: 24px;
+      max-width: 500px; width: 90%;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      animation: popIn 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+      overflow: hidden;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .popup-header {
+      background: linear-gradient(135deg, #1a472a, #2d6a4f);
+      padding: 20px 24px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+
+    .popup-header-text h3 { color: white; font-size: 18px; font-weight: 700; }
+    .popup-header-text p { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 4px; }
+
+    .popup-close {
+      background: rgba(255,255,255,0.1); border: none;
+      border-radius: 50%; width: 32px; height: 32px;
+      color: white; cursor: pointer; font-size: 16px;
+    }
+
+    .popup-close:hover { background: rgba(255,255,255,0.2); }
+
+    .popup-body { padding: 20px 24px; }
+
+    .remaining-badge {
+      background: #fff5f0; border: 1px solid #ffcdb0;
+      border-radius: 12px; padding: 12px 16px;
+      text-align: center; margin-bottom: 16px;
+      font-size: 14px; color: #666;
+    }
+
+    .remaining-badge strong { color: #ff6b35; font-size: 18px; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .product-card {
+      border: 2px solid #f0f0f0; border-radius: 16px;
+      padding: 16px; text-align: center;
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    .product-card:hover { border-color: #ff6b35; transform: translateY(-2px); }
+    .product-card.selected { border-color: #ff6b35; background: #fff5f0; }
+
+    .product-card .p-icon { font-size: 36px; margin-bottom: 8px; }
+    .product-card .p-name { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 4px; }
+    .product-card .p-price { font-size: 15px; font-weight: 700; color: #ff6b35; }
+
+    .add-selected-btn {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: white; border: none; border-radius: 50px;
+      padding: 14px; font-size: 16px; font-weight: 700;
+      cursor: pointer; width: 100%; transition: transform 0.2s;
+    }
+
+    .add-selected-btn:hover { transform: translateY(-2px); }
+    .add-selected-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+  </style>
+</head>
+<body>
+
+  <div class="shipping-bar" id="shippingBar">
+    <span class="shipping-icon">🚚</span>
+    <span class="shipping-text" id="barText">
+      أضف <strong id="remaining">100 ريال</strong> للحصول على شحن مجاني!
+    </span>
+    <div class="progress-container">
+      <div class="progress-mini">
+        <div class="progress-mini-fill" id="miniBar" style="width: 50%"></div>
+      </div>
+      <span class="progress-label" id="progressLabel">100/200 ريال</span>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <div class="cart-card">
+      <div class="cart-title">🛒 سلة التسوق</div>
+
+      <div class="cart-item">
+        <div class="cart-item-icon">⌚</div>
+        <div class="cart-item-name">ساعة ذكية</div>
+        <div class="cart-item-price">50 ريال</div>
+      </div>
+
+      <div class="cart-item">
+        <div class="cart-item-icon">🎧</div>
+        <div class="cart-item-name">سماعات لاسلكية</div>
+        <div class="cart-item-price">50 ريال</div>
+      </div>
+
+      <div id="extraItems"></div>
+
+      <div class="total-row">
+        <div class="total-label">المجموع:</div>
+        <div class="total-amount"><span id="total">100</span> ريال</div>
+      </div>
+
+      <div class="shipping-status" id="shippingStatus">
+        <span id="statusIcon">📦</span>
+        <span class="shipping-status-text" id="statusText">
+          باقي <strong>100 ريال</strong> للشحن المجاني
+        </span>
+      </div>
+
+      <button class="add-more-btn" onclick="showProducts()">
+        🛍️ أضف منتجات للحصول على شحن مجاني
+      </button>
+
+      <div class="slider-section">
+        <div class="slider-label">🎮 جرب — اسحب لزيادة المبلغ</div>
+        <input type="range" min="0" max="200" value="100" oninput="updateAmount(this.value)">
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة المنتجات المقترحة -->
+  <div class="overlay" id="overlay">
+    <div class="products-popup">
+      <div class="popup-header">
+        <div class="popup-header-text">
+          <h3>🛍️ منتجات مقترحة لك</h3>
+          <p>أضف منتجاً للحصول على شحن مجاني!</p>
+        </div>
+        <button class="popup-close" onclick="closeProducts()">✕</button>
+      </div>
+
+      <div class="popup-body">
+        <div class="remaining-badge" id="popupRemaining">
+          باقي <strong>100 ريال</strong> فقط للشحن المجاني 🚚
+        </div>
+
+        <div class="products-grid">
+          <div class="product-card" onclick="selectProduct(this, 'قميص قطني', 60)">
+            <div class="p-icon">👕</div>
+            <div class="p-name">قميص قطني</div>
+            <div class="p-price">60 ريال</div>
+          </div>
+          <div class="product-card" onclick="selectProduct(this, 'حقيبة يد', 80)">
+            <div class="p-icon">👜</div>
+            <div class="p-name">حقيبة يد</div>
+            <div class="p-price">80 ريال</div>
+          </div>
+          <div class="product-card" onclick="selectProduct(this, 'نظارة شمسية', 120)">
+            <div class="p-icon">🕶️</div>
+            <div class="p-name">نظارة شمسية</div>
+            <div class="p-price">120 ريال</div>
+          </div>
+          <div class="product-card" onclick="selectProduct(this, 'عطر فاخر', 150)">
+            <div class="p-icon">🌸</div>
+            <div class="p-name">عطر فاخر</div>
+            <div class="p-price">150 ريال</div>
+          </div>
+        </div>
+
+        <button class="add-selected-btn" id="addSelectedBtn" disabled onclick="addSelected()">
+          أضف المنتج للسلة
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const target = 200;
+    let currentAmount = 100;
+    let selectedProduct = null;
+
+    function updateAmount(amount) {
+      amount = parseInt(amount);
+      currentAmount = amount;
+      const remaining = Math.max(0, target - amount);
+      const percent = Math.min(100, (amount / target) * 100);
+
+      document.getElementById('total').textContent = amount;
+      document.getElementById('miniBar').style.width = percent + '%';
+      document.getElementById('progressLabel').textContent = `${amount}/${target} ريال`;
+      document.getElementById('popupRemaining').innerHTML = `باقي <strong>${remaining} ريال</strong> فقط للشحن المجاني 🚚`;
+
+      if (remaining > 0) {
+        document.getElementById('barText').innerHTML = `أضف <strong>${remaining} ريال</strong> للحصول على شحن مجاني!`;
+        document.getElementById('shippingBar').className = 'shipping-bar';
+        document.getElementById('statusIcon').textContent = '📦';
+        document.getElementById('statusText').innerHTML = `باقي <strong style="color:#ff6b35">${remaining} ريال</strong> للشحن المجاني`;
+        document.getElementById('shippingStatus').style.background = '#f8f8f8';
+      } else {
+        document.getElementById('barText').innerHTML = '🎉 مبروك! حصلت على <strong style="color:#90EE90">شحن مجاني</strong>';
+        document.getElementById('shippingBar').className = 'shipping-bar done';
+        document.getElementById('statusIcon').textContent = '✅';
+        document.getElementById('statusText').innerHTML = '<strong style="color:#4CAF50">تم تفعيل الشحن المجاني!</strong>';
+        document.getElementById('shippingStatus').style.background = '#f0fff0';
+      }
+    }
+
+    function showProducts() {
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    function closeProducts() {
+      document.getElementById('overlay').classList.remove('show');
+      document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+      selectedProduct = null;
+      document.getElementById('addSelectedBtn').disabled = true;
+      document.getElementById('addSelectedBtn').textContent = 'أضف المنتج للسلة';
+    }
+
+    function selectProduct(card, name, price) {
+      document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedProduct = { name, price };
+      document.getElementById('addSelectedBtn').disabled = false;
+      document.getElementById('addSelectedBtn').textContent = `✅ أضف "${name}" — ${price} ريال`;
+    }
+
+    function addSelected() {
+      if (!selectedProduct) return;
+
+      const extraItems = document.getElementById('extraItems');
+      extraItems.innerHTML += `
+        <div class="cart-item">
+          <div class="cart-item-icon">🛍️</div>
+          <div class="cart-item-name">${selectedProduct.name}</div>
+          <div class="cart-item-price">${selectedProduct.price} ريال</div>
+        </div>
+      `;
+
+      const slider = document.querySelector('input[type=range]');
+      const newVal = Math.min(200, currentAmount + selectedProduct.price);
+      slider.value = newVal;
+      updateAmount(newVal);
+      closeProducts();
+    }
+  </script>
+
+</body>
+</html>

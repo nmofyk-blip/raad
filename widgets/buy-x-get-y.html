@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>رعد - اشترِ X واحصل على Y</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .offer-card {
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer-badge {
+      position: absolute;
+      top: 20px;
+      left: -30px;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 40px;
+      transform: rotate(-45deg);
+    }
+
+    .offer-emoji {
+      font-size: 64px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .offer-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+
+    .offer-title span {
+      color: #ff6b35;
+    }
+
+    .offer-subtitle {
+      font-size: 15px;
+      color: #888;
+      margin-bottom: 28px;
+    }
+
+    /* مراحل العرض */
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #f5f5f5;
+      border: 2px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: all 0.3s;
+    }
+
+    .step-circle.active {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      border-color: #ff6b35;
+      box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+      transform: scale(1.1);
+    }
+
+    .step-circle.free {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      border-color: #4CAF50;
+      box-shadow: 0 4px 15px rgba(76,175,80,0.4);
+      transform: scale(1.1);
+    }
+
+    .step-label {
+      font-size: 11px;
+      color: #888;
+      font-weight: 600;
+    }
+
+    .step-label.free {
+      color: #4CAF50;
+    }
+
+    .arrow {
+      color: #ddd;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* شريط التقدم */
+    .progress-section {
+      background: #f8f8f8;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .progress-text {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .progress-text strong {
+      color: #ff6b35;
+      font-size: 16px;
+    }
+
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 50px;
+      height: 10px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #ff6b35, #f7931e);
+      height: 100%;
+      border-radius: 50px;
+      transition: width 0.5s ease;
+    }
+
+    .progress-hint {
+      font-size: 12px;
+      color: #4CAF50;
+      font-weight: 600;
+    }
+
+    /* أزرار الإضافة */
+    .quantity-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .qty-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid #ff6b35;
+      background: white;
+      color: #ff6b35;
+      font-size: 22px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: #ff6b35;
+      color: white;
+    }
+
+    .qty-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a1a2e;
+      min-width: 40px;
+    }
+
+    .add-btn {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 16px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+    }
+
+    .free-tag {
+      display: inline-block;
+      background: #4CAF50;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="offer-card">
+    <div class="offer-badge">عرض حصري</div>
+    
+    <span class="offer-emoji">🎉</span>
+    <div class="offer-title">اشترِ <span>2</span> واحصل على <span>1</span> مجاناً!</div>
+    <div class="offer-subtitle">أضف 3 قطع للسلة والثالثة على حسابنا</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle active" id="step1">🛍️</div>
+        <div class="step-label">القطعة 1</div>
+      </div>
+      <div class="arrow">←</div>
+      <div class="step">
+        <div class="step-circle" id="step2">🛍️</div>
+        <div class="step-label">القطعة 2</div>
+      </div>
+      <div class="arrow">←</div>
+      <div class="step">
+        <div class="step-circle" id="step3">🎁</div>
+        <div class="step-label free">مجاناً!</div>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-text" id="progressText">
+        أضف <strong>قطعة واحدة</strong> أخرى للحصول على الهدية
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+      </div>
+      <div class="progress-hint" id="progressHint">🎁 قطعة مجانية تنتظرك!</div>
+    </div>
+
+    <div class="quantity-section">
+      <button class="qty-btn" onclick="changeQty(-1)">−</button>
+      <div class="qty-number" id="qty">1</div>
+      <button class="qty-btn" onclick="changeQty(1)">+</button>
+    </div>
+
+    <button class="add-btn" id="addBtn" onclick="addToCart()">
+      🛒 أضف للسلة
+    </button>
+  </div>
+
+  <script>
+    let qty = 1;
+
+    function changeQty(change) {
+      qty = Math.max(1, Math.min(6, qty + change));
+      document.getElementById('qty').textContent = qty;
+      updateOffer();
+    }
+
+    function updateOffer() {
+      const fill = document.getElementById('progressFill');
+      const text = document.getElementById('progressText');
+      const hint = document.getElementById('progressHint');
+      const btn = document.getElementById('addBtn');
+      const s1 = document.getElementById('step1');
+      const s2 = document.getElementById('step2');
+      const s3 = document.getElementById('step3');
+
+      if (qty === 1) {
+        fill.style.width = '33%';
+        text.innerHTML = 'أضف <strong>قطعة واحدة</strong> أخرى للحصول على الهدية';
+        hint.textContent = '🎁 قطعة مجانية تنتظرك!';
+        s1.className = 'step-circle active';
+        s2.className = 'step-circle';
+        s3.className = 'step-circle';
+        btn.textContent = '🛒 أضف للسلة';
+      } else if (qty === 2) {
+        fill.style.width = '66%';
+        text.innerHTML = 'رائع! أضف <strong>قطعة أخيرة</strong> واحصل على الهدية 🎉';
+        hint.textContent = '⚡ خطوة واحدة للهدية!';
+        s1.className = 'step-circle active';
+        s2.className = 'step-circle active';
+        s3.className = 'step-circle';
+        btn.textContent = '🛒 أضف للسلة';
+      } else if (qty >= 3) {
+        fill.style.width = '100%';
+        text.innerHTML = '🎉 مبروك! حصلت على <strong>قطعة مجانية</strong>';
+        hint.textContent = '✅ تم تفعيل العرض!';
+        s1.className = 'step-circle active';
+        s2.className = 'step-circle active';
+        s3.className = 'step-circle free';
+        btn.innerHTML = '🎁 أضف للسلة <span class="free-tag">+1 مجاناً</span>';
+      }
+    }
+
+    function addToCart() {
+      if (qty >= 3) {
+        alert(`✅ تمت الإضافة!\n${qty} قطع + 1 مجاناً = ${qty + 1} قطع إجمالاً`);
+      } else {
+        alert(`تمت إضافة ${qty} قطعة للسلة`);
+      }
+    }
+  </script>
+
+</body>
+</html>
