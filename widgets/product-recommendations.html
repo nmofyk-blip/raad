@@ -1,0 +1,174 @@
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>رعد - منتجات مقترحة</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 40px 20px; }
+
+    .recommendations-widget {
+      max-width: 600px; margin: 0 auto;
+      background: white; border-radius: 20px;
+      padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+
+    .widget-header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 20px;
+    }
+
+    .widget-title { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+
+    .products-scroll {
+      display: flex; gap: 16px;
+      overflow-x: auto; padding-bottom: 8px;
+      scrollbar-width: none;
+    }
+
+    .products-scroll::-webkit-scrollbar { display: none; }
+
+    .product-card {
+      min-width: 160px; background: #f8f8f8;
+      border-radius: 16px; overflow: hidden;
+      border: 2px solid transparent; transition: all 0.2s;
+      cursor: pointer; flex-shrink: 0;
+    }
+
+    .product-card:hover { border-color: #ff6b35; transform: translateY(-4px); box-shadow: 0 8px 20px rgba(255,107,53,0.15); }
+
+    .product-image {
+      height: 120px; background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; position: relative;
+    }
+
+    .product-badge {
+      position: absolute; top: 8px; right: 8px;
+      background: #ff6b35; color: white;
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+    }
+
+    .product-info { padding: 12px; }
+    .product-name { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 6px; }
+
+    .product-price-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .product-price { font-size: 15px; font-weight: 700; color: #ff6b35; }
+    .product-old-price { font-size: 12px; color: #aaa; text-decoration: line-through; }
+
+    .product-stars { font-size: 11px; margin-bottom: 8px; }
+
+    .add-btn {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: white; border: none; border-radius: 50px;
+      padding: 8px; font-size: 12px; font-weight: 700;
+      cursor: pointer; width: 100%; transition: transform 0.2s;
+    }
+
+    .add-btn:hover { transform: scale(1.05); }
+
+    .tabs {
+      display: flex; gap: 8px; margin-bottom: 16px;
+      overflow-x: auto; padding-bottom: 4px;
+    }
+
+    .tab {
+      padding: 8px 16px; border-radius: 50px;
+      border: 1px solid #e0e0e0; background: white;
+      font-size: 13px; font-weight: 600; color: #666;
+      cursor: pointer; white-space: nowrap; transition: all 0.2s;
+    }
+
+    .tab.active { background: #ff6b35; color: white; border-color: #ff6b35; }
+  </style>
+</head>
+<body>
+  <div class="recommendations-widget">
+    <div class="widget-header">
+      <div class="widget-title">🛒 قد يعجبك أيضاً</div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active">الأكثر صلة</div>
+      <div class="tab">الأكثر مبيعاً</div>
+      <div class="tab">عروض خاصة</div>
+      <div class="tab">جديد</div>
+    </div>
+
+    <div class="products-scroll">
+      <div class="product-card">
+        <div class="product-image">
+          ⌚
+          <div class="product-badge">-20%</div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">ساعة ذكية برو</div>
+          <div class="product-price-row">
+            <div class="product-price">399 ر</div>
+            <div class="product-old-price">499 ر</div>
+          </div>
+          <div class="product-stars">⭐⭐⭐⭐⭐ (89)</div>
+          <button class="add-btn">🛒 أضف للسلة</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">🎧</div>
+        <div class="product-info">
+          <div class="product-name">سماعات لاسلكية</div>
+          <div class="product-price-row">
+            <div class="product-price">249 ر</div>
+          </div>
+          <div class="product-stars">⭐⭐⭐⭐⭐ (124)</div>
+          <button class="add-btn">🛒 أضف للسلة</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          📱
+          <div class="product-badge">جديد</div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">حامل الجوال</div>
+          <div class="product-price-row">
+            <div class="product-price">79 ر</div>
+            <div class="product-old-price">99 ر</div>
+          </div>
+          <div class="product-stars">⭐⭐⭐⭐ (45)</div>
+          <button class="add-btn">🛒 أضف للسلة</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">🌸</div>
+        <div class="product-info">
+          <div class="product-name">عطر فاخر</div>
+          <div class="product-price-row">
+            <div class="product-price">299 ر</div>
+          </div>
+          <div class="product-stars">⭐⭐⭐⭐⭐ (67)</div>
+          <button class="add-btn">🛒 أضف للسلة</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          👜
+          <div class="product-badge">-15%</div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">حقيبة جلدية</div>
+          <div class="product-price-row">
+            <div class="product-price">349 ر</div>
+            <div class="product-old-price">399 ر</div>
+          </div>
+          <div class="product-stars">⭐⭐⭐⭐⭐ (92)</div>
+          <button class="add-btn">🛒 أضف للسلة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

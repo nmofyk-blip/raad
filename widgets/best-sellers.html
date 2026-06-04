@@ -1,0 +1,168 @@
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>رعد - الأكثر مبيعاً</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 40px 20px; }
+
+    .bestsellers-widget {
+      max-width: 500px; margin: 0 auto;
+      background: white; border-radius: 20px;
+      padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+
+    .widget-header { margin-bottom: 20px; }
+    .widget-title { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .widget-subtitle { font-size: 13px; color: #888; }
+
+    .product-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 0; border-bottom: 1px solid #f0f0f0;
+      transition: all 0.2s; cursor: pointer;
+    }
+
+    .product-row:last-child { border-bottom: none; }
+    .product-row:hover { background: #fff5f0; border-radius: 12px; padding: 14px 10px; margin: 0 -10px; }
+
+    .rank {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; flex-shrink: 0;
+    }
+
+    .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: white; }
+    .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: white; }
+    .rank-3 { background: linear-gradient(135deg, #CD7F32, #A0522D); color: white; }
+    .rank-other { background: #f0f0f0; color: #888; }
+
+    .product-icon {
+      width: 56px; height: 56px; background: #f8f8f8;
+      border-radius: 12px; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 28px; flex-shrink: 0;
+    }
+
+    .product-details { flex: 1; }
+    .product-name { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 4px; }
+
+    .product-meta { display: flex; align-items: center; gap: 8px; }
+    .product-sales { font-size: 12px; color: #888; }
+    .product-trend { font-size: 12px; color: #4CAF50; font-weight: 600; }
+
+    .product-price-col { text-align: left; }
+    .product-price { font-size: 16px; font-weight: 800; color: #ff6b35; }
+    .product-old { font-size: 12px; color: #aaa; text-decoration: line-through; }
+
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #fff5f0; border: 1px solid #ffcdb0;
+      border-radius: 50px; padding: 6px 14px;
+      font-size: 12px; color: #ff6b35; font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .live-dot {
+      width: 8px; height: 8px; background: #ff6b35;
+      border-radius: 50%; animation: blink 1s ease infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bestsellers-widget">
+    <div class="widget-header">
+      <div class="widget-title">🏆 الأكثر مبيعاً</div>
+      <div class="widget-subtitle">المنتجات الأكثر طلباً هذا الأسبوع</div>
+    </div>
+
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      يتحدث مباشرة كل ساعة
+    </div>
+
+    <div class="product-row">
+      <div class="rank rank-1">🥇</div>
+      <div class="product-icon">⌚</div>
+      <div class="product-details">
+        <div class="product-name">ساعة ذكية برو</div>
+        <div class="product-meta">
+          <span class="product-sales">1,247 مبيعة</span>
+          <span class="product-trend">↑ 23%</span>
+        </div>
+      </div>
+      <div class="product-price-col">
+        <div class="product-price">399 ر</div>
+        <div class="product-old">499 ر</div>
+      </div>
+    </div>
+
+    <div class="product-row">
+      <div class="rank rank-2">🥈</div>
+      <div class="product-icon">🎧</div>
+      <div class="product-details">
+        <div class="product-name">سماعات لاسلكية</div>
+        <div class="product-meta">
+          <span class="product-sales">986 مبيعة</span>
+          <span class="product-trend">↑ 15%</span>
+        </div>
+      </div>
+      <div class="product-price-col">
+        <div class="product-price">249 ر</div>
+      </div>
+    </div>
+
+    <div class="product-row">
+      <div class="rank rank-3">🥉</div>
+      <div class="product-icon">🌸</div>
+      <div class="product-details">
+        <div class="product-name">عطر فاخر</div>
+        <div class="product-meta">
+          <span class="product-sales">743 مبيعة</span>
+          <span class="product-trend">↑ 8%</span>
+        </div>
+      </div>
+      <div class="product-price-col">
+        <div class="product-price">299 ر</div>
+      </div>
+    </div>
+
+    <div class="product-row">
+      <div class="rank rank-other">4</div>
+      <div class="product-icon">👜</div>
+      <div class="product-details">
+        <div class="product-name">حقيبة جلدية</div>
+        <div class="product-meta">
+          <span class="product-sales">621 مبيعة</span>
+          <span class="product-trend">↑ 5%</span>
+        </div>
+      </div>
+      <div class="product-price-col">
+        <div class="product-price">349 ر</div>
+        <div class="product-old">399 ر</div>
+      </div>
+    </div>
+
+    <div class="product-row">
+      <div class="rank rank-other">5</div>
+      <div class="product-icon">📱</div>
+      <div class="product-details">
+        <div class="product-name">حامل الجوال</div>
+        <div class="product-meta">
+          <span class="product-sales">498 مبيعة</span>
+          <span class="product-trend">↑ 12%</span>
+        </div>
+      </div>
+      <div class="product-price-col">
+        <div class="product-price">79 ر</div>
+        <div class="product-old">99 ر</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

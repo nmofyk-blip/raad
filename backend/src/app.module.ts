@@ -11,6 +11,8 @@ import { CustomersModule } from './customers/customers.module';
 import { OrdersModule } from './orders/orders.module';
 import { MessagesModule } from './messages/messages.module';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
+import { AbandonedCartModule } from './abandoned-cart/abandoned-cart.module';
+import { PostPurchaseModule } from './post-purchase/post-purchase.module';
 
 @Module({
   imports: [
@@ -48,6 +50,8 @@ import { WhatsappModule } from './whatsapp/whatsapp.module';
     OrdersModule,
     MessagesModule,
     WhatsappModule,
+    AbandonedCartModule,
+    PostPurchaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
